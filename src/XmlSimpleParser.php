@@ -112,6 +112,34 @@
 		}
 
 		/**
+		 * Gets all children with tag name matching specified regular expression
+		 * @param string $tagNamePattern Regular expression pattern for matching tag name
+		 * @param \SimpleXMLElement|string|null $node The parent node (Either the object or the node path as string). If empty the current node of this parser instance will be used.
+		 * @throws XmlNodeNotFoundException
+		 * @return \SimpleXMLElement[] The child nodes
+		 */
+		public function getChildrenMatch($tagNamePattern, $node = null) {
+			$ret = array();
+
+			if (empty($node)) {
+				$node = $this->node;
+			}
+			elseif (is_string($node)) {
+				$node = $this->getNode($node);
+			}
+
+			$children = $node->children();
+			foreach ($children as $curr) {
+				/** @var \SimpleXMLElement $curr */
+				if (preg_match($tagNamePattern, $curr->getName()) === 1) {
+					$ret[] = $curr;
+				}
+			}
+
+			return $ret;
+		}
+
+		/**
 		 * Gets a node from DOM by it's path
 		 * @param string $path The path. Use dot or "->" as separator
 		 * @param bool $useDefaultValueInsteadOfException True if to use default value if node does not exist
