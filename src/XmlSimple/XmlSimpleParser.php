@@ -182,10 +182,10 @@
 
 			$attributes = $this->getAttributes($node);
 
-			if (!isset($attributes['name']))
+			if (!isset($attributes[$name]))
 				throw new XmlAttributeNotFoundException($name, $node);
 
-			return $attributes['name'];
+			return $attributes[$name];
 		}
 
 		/**
