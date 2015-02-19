@@ -173,7 +173,7 @@
 		 * @param \SimpleXMLElement|null $node The parent node. If the current node of this parser instance will be used.
 		 * @return int|mixed|null
 		 */
-		public function getNodeValueTimestamp($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node) {
+		public function getNodeValueTimestamp($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
 			$v = self::getNodeValue($path, $useDefaultValueInsteadOfException, $defaultValue, $node);
 
 			if ($v !== $defaultValue)
@@ -190,7 +190,7 @@
 		 * @param \SimpleXMLElement|null $node The parent node. If the current node of this parser instance will be used.
 		 * @return int|mixed|\DateTime
 		 */
-		public function getNodeValueDateTime($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node) {
+		public function getNodeValueDateTime($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
 			$v = self::getNodeValue($path, $useDefaultValueInsteadOfException, $defaultValue, $node);
 
 			if ($v !== $defaultValue)
