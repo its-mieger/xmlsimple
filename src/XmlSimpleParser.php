@@ -66,6 +66,24 @@
 		}
 
 		/**
+		 * Loads the specified string to this instance
+		 * @param string $string The xml content
+		 * @throws XmlParseException
+		 * @return \SimpleXMLElement The object representing the document
+		 */
+		public function loadString($string) {
+			$dom = @simplexml_load_string($string);
+			if ($dom instanceof \SimpleXMLElement) {
+				$this->node = $dom;
+
+				return $dom;
+			}
+			else {
+				throw new XmlParseException('', @file_get_contents($string));
+			}
+		}
+
+		/**
 		 * Gets all children with specified tag name
 		 * @param string $tagName The tag name
 		 * @param \SimpleXMLElement|null $node The parent node. If the current node of this parser instance will be used.
