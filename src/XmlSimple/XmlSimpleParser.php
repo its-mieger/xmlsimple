@@ -144,7 +144,7 @@
 		 * Gets the node attributes
 		 * @param \SimpleXMLElement|string|null $node The node to get attributes of (Either the object or the node path as string).
 		 * If empty the current node of this parser instance will be used.
-		 * @return array Array containing the attribute value (key is attribute name)
+		 * @return string[] Array containing the attribute value (key is attribute name)
 		 * @throws XmlNodeNotFoundException
 		 */
 		public function getAttributes($node = null) {
@@ -158,7 +158,7 @@
 			}
 
 			foreach($node->attributes() as $name => $value) {
-				$ret[$name] = $value;
+				$ret[$name] = (string)$value;
 			}
 
 			return $ret;
@@ -168,7 +168,7 @@
 		 * Gets the value of an attribute
 		 * @param string $name The attribute name
 		 * @param \SimpleXMLElement|string|null $node The node to get the attribute of (Either the object or the node path as string).
-		 * @return mixed The attribute value
+		 * @return string The attribute value
 		 * @throws XmlAttributeNotFoundException
 		 * @throws XmlNodeNotFoundException
 		 */
