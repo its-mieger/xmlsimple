@@ -1,6 +1,7 @@
 <?php
 	namespace XmlSimple;
 
+	use XmlSimple\Exception\XmlAttributeNotFoundException;
 	use XmlSimple\Exception\XmlNodeNotFoundException;
 	use XmlSimple\Exception\XmlParseException;
 
@@ -137,6 +138,54 @@
 			}
 
 			return $ret;
+		}
+
+		/**
+		 * Gets the node attributes
+		 * @param \SimpleXMLElement|string|null $node The node to get attributes of (Either the object or the node path as string).
+		 * If empty the current node of this parser instance will be used.
+		 * @return array Array containing the attribute value (key is attribute name)
+		 * @throws XmlNodeNotFoundException
+		 */
+		public function getAttributes($node = null) {
+			$ret = array();
+
+			if (empty($node)) {
+				$node = $this->node;
+			}
+			elseif (is_string($node)) {
+				$node = $this->getNode($node);
+			}
+
+			foreach($node->attributes() as $name => $value) {
+				$ret[$name] = $value;
+			}
+
+			return $ret;
+		}
+
+		/**
+		 * Gets the value of an attribute
+		 * @param string $name The attribute name
+		 * @param \SimpleXMLElement|string|null $node The node to get the attribute of (Either the object or the node path as string).
+		 * @return mixed The attribute value
+		 * @throws XmlAttributeNotFoundException
+		 * @throws XmlNodeNotFoundException
+		 */
+		public function getAttributeValue($name, $node = null) {
+			if (empty($node)) {
+				$node = $this->node;
+			}
+			elseif (is_string($node)) {
+				$node = $this->getNode($node);
+			}
+
+			$attributes = $this->getAttributes($node);
+
+			if (!isset($attributes['name']))
+				throw new XmlAttributeNotFoundException($name, $node);
+
+			return $attributes['name'];
 		}
 
 		/**
