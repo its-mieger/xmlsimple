@@ -183,6 +183,23 @@
 		}
 
 		/**
+		 * Gets a timestamp from a specified date node
+		 * @param string $path The path. Use dot or "->" as separator
+		 * @param bool $useDefaultValueInsteadOfException True if to use default value if node does not exist
+		 * @param null|mixed $defaultValue True if to use default value if node does not exist
+		 * @param \SimpleXMLElement|null $node The parent node. If the current node of this parser instance will be used.
+		 * @return int|mixed|\DateTime
+		 */
+		public function getNodeValueDateTime($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node) {
+			$v = self::getNodeValue($path, $useDefaultValueInsteadOfException, $defaultValue, $node);
+
+			if ($v !== $defaultValue)
+				$v = new \DateTime($v);
+
+			return $v;
+		}
+
+		/**
 		 * Gets a boolean value from a specified date node.
 		 * @param string $path The path. Use dot or "->" as separator
 		 * @param bool $useDefaultValueInsteadOfException True if to use default value if node does not exist
