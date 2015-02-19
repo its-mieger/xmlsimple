@@ -1,0 +1,20 @@
+{
+	"name": "its-mieger/XmlSimple",
+	"description": "XML helper classes",
+	"minimum-stability": "dev",
+	"license": "proprietary",
+	"authors": [
+		{
+			"name": "Christopher Mieger",
+			"email": "christopher.mieger@its-mieger.de"
+		}
+	],
+	"require": {
+		"phpunit/phpunit": "~4.5"
+	},
+	"autoload": {
+		"psr-0": {
+			"XmlSimple": "src/"
+		}
+	}
+}
