@@ -13,16 +13,37 @@
 		protected $node = null;
 
 		protected $decimalSeparator = '.';
+		protected $returnCharset = 'UTF-8';
 
 		/**
 		 * Creates a new instance
 		 * @param \SimpleXMLElement|null $node The node to load for the parser
+		 * @param string $returnCharset The charset returned values are to be encoded in
 		 */
-		public function __construct($node = null) {
+		public function __construct(\SimpleXMLElement $node = null, $returnCharset = 'UTF-8') {
 			if (!empty($node) && $node instanceof \SimpleXMLElement)
 				$this->node = $node;
+
+			$this->setReturnCharset($returnCharset);
 		}
 
+
+		/**
+		 * Creates a new parser instance for a specified child not. All parsing settings are copied to the new parser
+		 * @param \SimpleXMLElement|string $node The parser root node (Either the object or the node path as string)
+		 * @return \XmlSimple\XmlSimpleParser The new parser instance
+		 * @throws XmlNodeNotFoundException
+		 */
+		public function createChildParser($node) {
+			if (is_string($node)) {
+				$node = $this->getNode($node);
+			}
+
+			$newParser = new self($node, $this->returnCharset);
+			$newParser->decimalSeparator = $this->decimalSeparator;
+
+			return $newParser;
+		}
 
 		/**
 		 * Gets the parser's root node
@@ -47,6 +68,23 @@
 		public function setDecimalSeparator($decimalSeparator) {
 			$this->decimalSeparator = $decimalSeparator;
 		}
+
+		/**
+		 * Gets the charset returned values are to be encoded in
+		 * @return string The charset
+		 */
+		public function getReturnCharset() {
+			return $this->returnCharset;
+		}
+
+		/**
+		 * Sets the charset returned values are to be encoded in
+		 * @param string $returnCharset The charset name
+		 */
+		public function setReturnCharset($returnCharset) {
+			$this->returnCharset = strtoupper($returnCharset);
+		}
+
 
 		/**
 		 * Loads the specified file to this instance
@@ -158,7 +196,7 @@
 			}
 
 			foreach($node->attributes() as $name => $value) {
-				$ret[$name] = (string)$value;
+				$ret[$name] = $this->encodeForReturn($value);
 			}
 
 			return $ret;
@@ -241,7 +279,7 @@
 			$node = self::getNode($path, $useDefaultValueInsteadOfException, $defaultValue, $node);
 
 			if ($node !== $defaultValue) {
-				$node = (string)$node;
+				$node = $this->encodeForReturn($node);
 			}
 
 			return $node;
@@ -338,5 +376,17 @@
 			}
 
 			return $v;
+		}
+
+		/**
+		 * Applies the set return encoding
+		 * @param mixed $value The value to be encoded (will be cast as string)
+		 * @return string The encoded string
+		 */
+		protected function encodeForReturn($value) {
+			if ($this->returnCharset !== 'UTF-8')
+				return mb_convert_encoding((string)$value, $this->returnCharset, 'UTF-8');
+			else
+				return (string)$value;
 		}
 	}
