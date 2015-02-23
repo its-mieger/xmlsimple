@@ -228,7 +228,7 @@
 
 		/**
 		 * Gets a node from DOM by it's path
-		 * @param string $path The path. Use dot or "->" as separator
+		 * @param string $path The path. Use dot or "->" as separator. Empty string or single dot as path will return current node
 		 * @param bool $useDefaultValueInsteadOfException True if to use default value if node does not exist
 		 * @param null $defaultValue The default value to use
 		 * @param \SimpleXMLElement|null $node The parent node. If the current node of this parser instance will be used.
@@ -238,6 +238,9 @@
 		public function getNode($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
 			if (empty($node))
 				$node = $this->node;
+
+			if ($path == '' || $path == '.')
+				return $node;
 
 			$res  = $node;
 			$path = str_replace('->', '.', $path);
