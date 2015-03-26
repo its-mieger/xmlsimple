@@ -37,7 +37,7 @@
 		}
 
 		public function getContent() {
-			return $this->getContent();
+			return $this->content;
 		}
 
 	}
