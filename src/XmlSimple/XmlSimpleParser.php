@@ -118,7 +118,7 @@
 				return $dom;
 			}
 			else {
-				throw new XmlParseException('', @file_get_contents($string));
+				throw new XmlParseException('', $string);
 			}
 		}
 
