@@ -2,28 +2,24 @@
 
 	namespace XmlSimple;
 
-	abstract class XmlSimpleStreamParser
+	class XmlSimpleStreamParser
 	{
 		private $uri;
 		private $processPath = null;
+		private $processFn;
 
 
 		/**
 		 * Creates a new instance
 		 * @param string $uri Path to input file.
 		 * @param string $processPath Path of the nodes to process (dot-notation).
+		 * @param callable $processFn The function to be called on nodes to process
 		 */
-		public function __construct($uri, $processPath) {
+		public function __construct($uri, $processPath, $processFn) {
 			$this->uri         = $uri;
 			$this->processPath = $processPath;
+			$this->processFn = $processFn;
 		}
-
-		/**
-		 * Gets called for every XML node of the nodes-list that is found in the document
-		 * @param XmlSimpleParser $nodeParser Parser instance for the node to process
-		 */
-		abstract public function processNode(XmlSimpleParser $nodeParser);
-
 
 		/**
 		 * Starts the streaming and parsing of the XML file
@@ -37,6 +33,7 @@
 
 			// init parser for parsing filtered nodes
 			$nodeParser = $this->initParser();
+			$fn = $this->processFn;
 
 			while ($reader->read()) {
 				switch ($reader->nodeType) {
@@ -47,8 +44,7 @@
 						// check if node to process
 						if (implode('.', $currTreePath) == $this->processPath) {
 							$nodeParser->loadString($reader->readOuterXml());
-
-							$this->processNode($nodeParser);
+							$fn($nodeParser);
 						}
 
 						// remove path segment if empty node
