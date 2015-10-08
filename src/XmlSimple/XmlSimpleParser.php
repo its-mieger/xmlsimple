@@ -206,11 +206,13 @@
 		 * Gets the value of an attribute
 		 * @param string $name The attribute name
 		 * @param \SimpleXMLElement|string|null $node The node to get the attribute of (Either the object or the node path as string).
-		 * @return string The attribute value
+		 * @param bool $useDefaultValueInsteadOfException True if to use default value if attribute does not exist
+		 * @param null $defaultValue The default value to use
 		 * @throws XmlAttributeNotFoundException
 		 * @throws XmlNodeNotFoundException
+		 * @return string The attribute value
 		 */
-		public function getAttributeValue($name, $node = null) {
+		public function getAttributeValue($name, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
 			if (empty($node)) {
 				$node = $this->node;
 			}
@@ -220,8 +222,12 @@
 
 			$attributes = $this->getAttributes($node);
 
-			if (!isset($attributes[$name]))
-				throw new XmlAttributeNotFoundException($name, $node);
+			if (!isset($attributes[$name])) {
+				if (!$useDefaultValueInsteadOfException)
+					throw new XmlAttributeNotFoundException($name, $node);
+				else
+					return $defaultValue;
+			}
 
 			return $attributes[$name];
 		}
