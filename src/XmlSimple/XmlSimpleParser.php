@@ -132,7 +132,7 @@
 		public function getChildren($tagName, $node = null) {
 			$ret = array();
 
-			if (empty($node)) {
+			if ($node == null) {
 				$node = $this->node;
 			}
 			elseif (is_string($node)) {
@@ -160,7 +160,7 @@
 		public function getChildrenMatch($tagNamePattern, $node = null) {
 			$ret = array();
 
-			if (empty($node)) {
+			if ($node == null) {
 				$node = $this->node;
 			}
 			elseif (is_string($node)) {
@@ -188,7 +188,7 @@
 		public function getAttributes($node = null) {
 			$ret = array();
 
-			if (empty($node)) {
+			if ($node == null) {
 				$node = $this->node;
 			}
 			elseif (is_string($node)) {
@@ -213,7 +213,7 @@
 		 * @return string The attribute value
 		 */
 		public function getAttributeValue($name, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
-			if (empty($node)) {
+			if ($node == null) {
 				$node = $this->node;
 			}
 			elseif (is_string($node)) {
@@ -242,7 +242,7 @@
 		 * @return \SimpleXMLElement The XML-node DOM object
 		 */
 		public function getNode($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
-			if (empty($node))
+			if ($node == null)
 				$node = $this->node;
 
 			if ($path == '' || $path == '.')
@@ -282,7 +282,7 @@
 		 * @return string|mixed The XML-node DOM object
 		 */
 		public function getNodeValue($path, $useDefaultValueInsteadOfException = false, $defaultValue = null, $node = null) {
-			if (empty($node))
+			if ($node == null)
 				$node = $this->node;
 
 			$node = self::getNode($path, $useDefaultValueInsteadOfException, $defaultValue, $node);
