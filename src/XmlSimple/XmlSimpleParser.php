@@ -21,7 +21,7 @@
 		 * @param string $returnCharset The charset returned values are to be encoded in
 		 */
 		public function __construct(\SimpleXMLElement $node = null, $returnCharset = 'UTF-8') {
-			if (!empty($node) && $node instanceof \SimpleXMLElement)
+			if (!is_null($node) && $node instanceof \SimpleXMLElement)
 				$this->node = $node;
 
 			$this->setReturnCharset($returnCharset);
