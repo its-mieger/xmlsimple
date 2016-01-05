@@ -123,6 +123,27 @@
 		}
 
 		/**
+		 * Loads a DOMNode node
+		 * @param \DOMNode $dom The DOMNode to load
+		 * @throws XmlParseException
+		 * @throws \DOMException
+		 */
+		public function loadDom(\DOMNode $dom) {
+			$doc = new \DOMDocument();
+
+			$node = simplexml_import_dom($doc->importNode($dom, true));
+
+			if ($node) {
+				$this->node = $node;
+
+				return $node;
+			}
+			else {
+				throw new XmlParseException('', $doc->saveXML(), 'Could not import DOM node to simple xml');
+			}
+		}
+
+		/**
 		 * Gets all children with specified tag name
 		 * @param string $tagName The tag name
 		 * @param \SimpleXMLElement|string|null $node The parent node (Either the object or the node path as string). If empty the current node of this parser instance will be used.

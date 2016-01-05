@@ -43,7 +43,7 @@
 
 						// check if node to process
 						if (implode('.', $currTreePath) == $this->processPath) {
-							$nodeParser->loadString($reader->readOuterXml());
+							$nodeParser->loadDom($reader->expand());
 							$fn($nodeParser);
 						}
 
