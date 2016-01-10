@@ -361,7 +361,7 @@
 			$v = self::getNodeValue($path, $useDefaultValueInsteadOfException, $defaultValue, $node);
 
 			if ($v !== $defaultValue) {
-				$v = in_array(strtolower($defaultValue . ''), array('true', '1'));
+				$v = in_array(strtolower($v . ''), array('true', '1'));
 			}
 
 			return $v;
