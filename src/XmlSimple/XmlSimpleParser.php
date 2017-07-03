@@ -160,11 +160,21 @@
 				$node = $this->getNode($node);
 			}
 
-			$children = $node->children();
-			foreach($children as $curr) {
-				/** @var \SimpleXMLElement $curr*/
-				if ($curr->getName() == $tagName) {
-					$ret[] = $curr;
+			// check for namespace
+			$nsSplit = explode(':', $tagName);
+			if (count($nsSplit) == 2) {
+				$node = $node->children($nsSplit[0], true);
+				$tagName = $nsSplit[1];
+			}
+
+			if ($node) {
+				$children = $node->children();
+				foreach ($children as $curr) {
+
+					/** @var \SimpleXMLElement $curr */
+					if ($curr->getName() == $tagName) {
+						$ret[] = $curr;
+					}
 				}
 			}
 
